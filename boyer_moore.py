@@ -3,19 +3,31 @@
 # Author: Overxfl0w13 #
 # Sequential search, boyer moore algorithm #
 
+import tweepy
+
+consumer_key = 	"i5qxQwsMYZOC0ibF5LZVbQ19G"
+consumer_secret = "97WmrQgYQqkGdJiDiUp8E5q5xqtR9mvmKo59gxGuPmFL33Y3bJ"
+access_token = "731777689028153344-fZu83uU9I2YnokAcbReFaV4wtWO9Z4H"
+access_token_secret = "RVgBZU6FPP7wFDWPzcHCVWiOYOqhebQbiHerSF3qrSNTw"
+
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+auth.set_access_token(access_token, access_token_secret)
+
+api = tweepy.API(auth, wait_on_rate_limit=True)
+
 def generate_d_vector(text,pattern):
 	d = {}
 	for char in text: 
-		founded = pattern.lower().rfind(char.lower())
-		if char.lower() not in d:
-			d[char] = len(pattern)-1-pattern.lower().rfind(char.lower()) if founded != -1 else len(pattern)
+		founded = pattern.rfind(char)
+		if char not in d:
+			d[char] = len(pattern)-1-pattern.rfind(char) if founded != -1 else len(pattern)
 	return d
 
 def boyer_moore(text,pattern,d):
 	j = len(pattern)-1
 	while j<len(text):
 		i = len(pattern)-1
-		while i>0 and pattern[i].lower()==text[j].lower(): 
+		while i>0 and pattern[i]==text[j]: 
 			i,j = i-1,j-1		
 		if i==0: return j
 		else:
@@ -24,5 +36,10 @@ def boyer_moore(text,pattern,d):
 	return -1
 	
 if __name__ == "__main__":
-	text,pattern = "Dalam KBBI kemahasiswaan adalah kata benda yang memiliki arti seluk-beluk mahasiswa; yang bersangkutan dengan mahasiswa. Hal-hal apa yang bisa ditentukan bila melihat definisi kemahasiswaan tersebut? Mahasiswa, jurusan, fakultas, perguruan tinggi, profesi, buku, jurnal, belajar, skripsi, dan sebagainya. Akan tetapi pengertian kemahasiswaan yang begitu luas tersebut mengalami penyempitan makna yang drastis. Arti kata kemahasiswaan saat ini hanya merujuk pada hal-hal yang berbau non-akademis. Seolah-olah kemahasiswaan hanya berhubungan dengan hal-hal yang seremonial belaka. Mahasiswa mendemo pemerintahan, membuat gerakan-gerakan yang sok mencerminkan populisme, suka mengikuti kegiatan di kampus sampai melupakan belajar, dan masih banyak lagi. Pada akhirnya kemahasiswaan hanya dipakai sebagai ajang kesombongan dan pamer di media sosial, atau yang beberapa orang katakan “panjat sosial”. Padahal belum tentu orang-orang tersebut memahami esensi dari apa yang mereka sebut-sebut sebagai kemahasiswaan. Pertama, mahasiswa bukanlah siswa pendidikan dasar. Mahasiswa sudah bukan anak SMA lagi. Perbedaan mendasar antara mahasiswa dengan siswa SMA adalah bidang studi yang dipelajari. Mahasiswa sesungguhnya sudah menentukan bidang apa yang ia minati dan tekuni, yang diharapkan bisa dimanfaatkan untuk kehidupannya di masa depan.", input("Masukkan string uji: ")
-	print(boyer_moore(text,pattern,generate_d_vector(text,pattern)))
+	public_tweets = api.home_timeline()
+	find_string = input('Masukkan string uji: ')
+	for tweet in public_tweets:
+	    print (tweet.text)
+	    # if (boyer_moore(tweet.text,find_string,generate_d_vector(tweet.text,find_string)) == -1):
+	    print(boyer_moore(tweet.text,find_string,generate_d_vector(tweet.text,find_string)))
+	    print ("---------------------------------------------------------------")

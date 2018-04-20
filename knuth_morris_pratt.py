@@ -4,6 +4,18 @@ m = haystack
 n = needle
 """
 
+import tweepy
+
+consumer_key =  "i5qxQwsMYZOC0ibF5LZVbQ19G"
+consumer_secret = "97WmrQgYQqkGdJiDiUp8E5q5xqtR9mvmKo59gxGuPmFL33Y3bJ"
+access_token = "731777689028153344-fZu83uU9I2YnokAcbReFaV4wtWO9Z4H"
+access_token_secret = "RVgBZU6FPP7wFDWPzcHCVWiOYOqhebQbiHerSF3qrSNTw"
+
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+auth.set_access_token(access_token, access_token_secret)
+
+api = tweepy.API(auth, wait_on_rate_limit=True)
+
 def kmp(strings, find_string):
     n = len(strings)
     m = len(find_string)
@@ -20,7 +32,7 @@ def kmp(strings, find_string):
             k = fail[k-1]
         else:
             j += 1
-    return 'tidak ada kecocokkan'
+    return -1
         
         
 def kmp_fail(find_string):
@@ -39,5 +51,12 @@ def kmp_fail(find_string):
             j += 1
     return fail
 	
-find_string = input('Masukkan string uji: ')
-print(kmp('Dalam KBBI kemahasiswaan adalah kata benda yang memiliki arti seluk-beluk mahasiswa; yang bersangkutan dengan mahasiswa. Hal-hal apa yang bisa ditentukan bila melihat definisi kemahasiswaan tersebut? Mahasiswa, jurusan, fakultas, perguruan tinggi, profesi, buku, jurnal, belajar, skripsi, dan sebagainya. Akan tetapi pengertian kemahasiswaan yang begitu luas tersebut mengalami penyempitan makna yang drastis. Arti kata kemahasiswaan saat ini hanya merujuk pada hal-hal yang berbau non-akademis. Seolah-olah kemahasiswaan hanya berhubungan dengan hal-hal yang seremonial belaka. Mahasiswa mendemo pemerintahan, membuat gerakan-gerakan yang sok mencerminkan populisme, suka mengikuti kegiatan di kampus sampai melupakan belajar, dan masih banyak lagi. Pada akhirnya kemahasiswaan hanya dipakai sebagai ajang kesombongan dan pamer di media sosial, atau yang beberapa orang katakan “panjat sosial”. Padahal belum tentu orang-orang tersebut memahami esensi dari apa yang mereka sebut-sebut sebagai kemahasiswaan. Pertama, mahasiswa bukanlah siswa pendidikan dasar. Mahasiswa sudah bukan anak SMA lagi. Perbedaan mendasar antara mahasiswa dengan siswa SMA adalah bidang studi yang dipelajari. Mahasiswa sesungguhnya sudah menentukan bidang apa yang ia minati dan tekuni, yang diharapkan bisa dimanfaatkan untuk kehidupannya di masa depan.',find_string))
+    
+if __name__ == "__main__":
+    public_tweets = api.home_timeline()
+    find_string = input('Masukkan string uji: ')
+    for tweet in public_tweets:
+        print (tweet.text)
+        if (kmp(tweet.text,find_string) != -1):
+            print("Spam detected!")
+        print ("---------------------------------------------------------------")
