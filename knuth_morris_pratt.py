@@ -1,10 +1,5 @@
-"""
-KMP Text Search - O(m + n)
-m = haystack
-n = needle
-"""
-
 import tweepy
+import sys
 
 consumer_key =  "i5qxQwsMYZOC0ibF5LZVbQ19G"
 consumer_secret = "97WmrQgYQqkGdJiDiUp8E5q5xqtR9mvmKo59gxGuPmFL33Y3bJ"
@@ -51,10 +46,14 @@ def kmp_fail(find_string):
             j += 1
     return fail
 
+
 public_tweets = api.home_timeline()
-find_string = "RT"#input('Masukkan string uji: ')""
+find_string = sys.argv[1]
 for tweet in public_tweets:
-    print (tweet.text)
+    print ("@"+str(tweet.user.screen_name)+ " : ")
+    print (tweet.text+" | ")
+    print (str(tweet.created_at))
     if (kmp(tweet.text,find_string) != -1):
-        print("Spam detected!")
+        print("==> Spam detected!")
     print ("---------------------------------------------------------------")
+

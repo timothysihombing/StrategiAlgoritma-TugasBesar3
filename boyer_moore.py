@@ -1,9 +1,5 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-# Author: Overxfl0w13 #
-# Sequential search, boyer moore algorithm #
-
 import tweepy
+import sys
 
 consumer_key = 	"i5qxQwsMYZOC0ibF5LZVbQ19G"
 consumer_secret = "97WmrQgYQqkGdJiDiUp8E5q5xqtR9mvmKo59gxGuPmFL33Y3bJ"
@@ -37,9 +33,11 @@ def boyer_moore(text,pattern,d):
 	
 if __name__ == "__main__":
 	public_tweets = api.home_timeline()
-	find_string = input('Masukkan string uji: ')
+	find_string = sys.argv[1]
 	for tweet in public_tweets:
-	    print (tweet.text)
-	    # if (boyer_moore(tweet.text,find_string,generate_d_vector(tweet.text,find_string)) == -1):
-	    print(boyer_moore(tweet.text,find_string,generate_d_vector(tweet.text,find_string)))
-	    print ("---------------------------------------------------------------")
+		print("@"+str(tweet.user.screen_name)+ " : ")
+		print(tweet.text+" | ")
+		print(str(tweet.created_at))
+		if (boyer_moore(tweet.text,find_string,generate_d_vector(tweet.text,find_string)) != -1):
+			print("==> Spam detected!")
+		print ("---------------------------------------------------------------")
