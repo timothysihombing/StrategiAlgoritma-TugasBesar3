@@ -50,13 +50,11 @@ def kmp_fail(find_string):
         else:
             j += 1
     return fail
-	
-    
-if __name__ == "__main__":
-    public_tweets = api.home_timeline()
-    find_string = input('Masukkan string uji: ')
-    for tweet in public_tweets:
-        print (tweet.text)
-        if (kmp(tweet.text,find_string) != -1):
-            print("Spam detected!")
-        print ("---------------------------------------------------------------")
+
+public_tweets = api.home_timeline()
+find_string = "RT"#input('Masukkan string uji: ')""
+for tweet in public_tweets:
+    print (tweet.text)
+    if (kmp(tweet.text,find_string) != -1):
+        print("Spam detected!")
+    print ("---------------------------------------------------------------")
